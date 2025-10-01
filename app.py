@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import os
 from datetime import datetime
+import os
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -33,13 +33,58 @@ class Case(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'case_type': self.case_type,
+            'case_number': self.case_number,
+            'case_year': self.case_year,
+            'court_type': self.court_type,
+            'party_names': self.party_names,
+            'filing_date': self.filing_date.isoformat() if self.filing_date else None,
+            'next_hearing_date': self.next_hearing_date.isoformat() if self.next_hearing_date else None,
+            'case_status': self.case_status,
+            'created_at': self.created_at.isoformat()
+        }
+
+# Create database tables
+with app.app_context():
+    db.create_all()
+
 # Routes
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/api/search', methods=['POST'])
+def search_case():
+    data = request.get_json()
+    
+    # Basic validation
+    if not all(k in data for k in ['court_type', 'case_type', 'case_number', 'case_year']):
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # For now, return a mock response
+    # In the next step, we'll implement actual database search
+    mock_case = {
+        'case_type': data['case_type'],
+        'case_number': data['case_number'],
+        'case_year': data['case_year'],
+        'court_type': data['court_type'],
+        'party_names': 'Sample Petitioner vs. Sample Respondent',
+        'filing_date': '2023-01-15',
+        'next_hearing_date': '2023-11-10',
+        'case_status': 'Pending',
+        'is_mock': True
+    }
+    
+    return jsonify(mock_case)
+
+# Add a route to view all cases (for testing)
+@app.route('/cases')
+def view_cases():
+    cases = Case.query.all()
+    return jsonify([case.to_dict() for case in cases])
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # This creates the database tables
-    app.run(debug=True)  # This starts the Flask development server
+    app.run(debug=True)
