@@ -3,76 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Court Case Fetcher</title>
+    <title>eCourts Services</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        .form-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        :root {
+            --primary-color: #1a4d8f;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ffc107;
         }
-        .result-container {
-            margin-top: 2rem;
-            display: none;
+        
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 0;
+            border-bottom: 4px solid var(--accent-color);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .login-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .login-btn {
+            background-color: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .main-container {
+            max-width: 100%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            height: 100%;
+        }
+        
+        .nav-link {
+            color: white;
+            padding: 10px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 20px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .search-box {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .btn-search {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            padding: 8px 20px;
+        }
+        
+        .btn-search:hover {
+            background-color: #0d3c7c;
+            color: white;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .results-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .results-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .results-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .case-details h5 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .table-sm th {
+            width: 40%;
+        }
+        
+        .list-group-item {
+            margin-bottom: 10px;
+            border-radius: 4px !important;
         }
     </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body>
+    <!-- Header -->
+    <header class="header">
         <div class="container">
-            <a class="navbar-brand" href="/">Court Case Fetcher</a>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="logo">
+                        <img src="https://ecourts.gov.in/ecourtindia/images/logo.png" alt="eCourts Logo">
+                        eCourts Services
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="login-section">
+                        <span class="me-3">Welcome, Guest</span>
+                        <button class="login-btn">Login</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="container mt-4">
-        <div class="form-container bg-white">
-            <h2 class="mb-4 text-center">Search Court Cases</h2>
-            
-            <form id="searchForm">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label for="courtType" class="form-label">Court Type</label>
-                        <select class="form-select" id="courtType" required>
-                            <option value="">Select Court Type</option>
-                            <option value="high_court">High Court</option>
-                            <option value="district_court">District Court</option>
-                        </select>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <label for="caseType" class="form-label">Case Type</label>
-                        <input type="text" class="form-control" id="caseType" 
-                               placeholder="E.g., CIVIL, CRIMINAL" required>
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="caseNumber" class="form-label">Case Number</label>
-                        <input type="text" class="form-control" id="caseNumber" 
-                               placeholder="Number" required>
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="caseYear" class="form-label">Year</label>
-                        <input type="number" class="form-control" id="caseYear" 
-                               min="1900" max="2099" value="2023" required>
-                    </div>
+    <!-- Main Content -->
+    <div class="container main-container">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-search"></i> Case Status
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-calendar-week"></i> Cause List
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-file-earmark-text"></i> Judgments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-people"></i> Party Name
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-person-lines-fill"></i> Advocate Name
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-building"></i> FIR Number
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <span id="searchButtonText">Search Case</span>
-                        <span id="searchSpinner" class="spinner-border spinner-border-sm d-none" 
-                              role="status" aria-hidden="true"></span>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="col-md-9">
+                <div class="content">
+                    <h4 class="mb-4">Case Status</h4>
+                    
+                    <!-- Search Form -->
+                    <div class="search-box">
+                        <form id="searchForm">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="state" class="form-label">Select State</label>
+                                    <select class="form-select" id="state" required>
+                                        <option value="">Select State</option>
+                                        <option value="delhi">Delhi</option>
+                                        <option value="maharastra">Maharashtra</option>
+                                        <option value="karnataka">Karnataka</option>
+                                        <option value="tamil_nadu">Tamil Nadu</option>
+                                        <option value="kerala">Kerala</option>
+                                        <option value="west_bengal">West Bengal</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="caseType" class="form-label">Case Type</label>
+                                    <select class="form-select" id="caseType" required>
+                                        <option value="">Select Case Type</option>
+                                        <option value="civil">Civil</option>
+                                        <option value="criminal">Criminal</option>
+                                        <option value="writ">Writ Petition</option>
+                                        <option value="tax">Tax</option>
+                                        <option value="company">Company</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="caseNumber" class="form-label">Case Number</label>
+                                    <input type="text" class="form-control" id="caseNumber" required 
+                                           placeholder="e.g., 1234">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="year" class="form-label">Year</label>
+                                    <input type="number" class="form-control" id="year" 
+                                           min="2000" max="2025" value="2023" required>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-search">
+                                        <i class="bi bi-search me-2"></i> Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Results Table -->
+                    <div class="table-responsive">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>CNR Number</th>
+                                    <th>Filing Number</th>
+                                    <th>Filing Date</th>
+                                    <th>Registration Number</th>
+                                    <th>Registration Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResults">
+                                <!-- Results will be populated here -->
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="bi bi-search" style="font-size: 2rem; opacity: 0.5;"></i>
+                                        <p class="mt-2">Enter search criteria to find cases</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Search results navigation" class="d-none" id="paginationContainer">
+                        <ul class="pagination" id="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">© 2023 eCourts - Integrated Case Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Case Details Modal -->
+    <div class="modal fade" id="caseDetailsModal" tabindex="-1" aria-labelledby="caseDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="caseDetailsModalLabel">Case Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="downloadCasePdf">
+                        <i class="bi bi-file-pdf"></i> Download PDF
                     </button>
-                </div>
-            </form>
-            
-            <div id="resultContainer" class="result-container">
-                <h4 class="mt-4">Search Results</h4>
-                <div id="searchResults" class="mt-3">
-                    <!-- Results will be displayed here -->
                 </div>
             </div>
         </div>
@@ -82,27 +373,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Handle form submission
             $('#searchForm').on('submit', async function(e) {
                 e.preventDefault();
                 
                 // Show loading state
-                const button = $('#searchButton');
-                const spinner = $('#searchSpinner');
-                const buttonText = $('#searchButtonText');
-                button.prop('disabled', true);
-                spinner.removeClass('d-none');
-                buttonText.text('Searching...');
+                const searchBtn = $(this).find('button[type="submit"]');
+                const originalBtnText = searchBtn.html();
+                searchBtn.prop('disabled', true).html(`
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Searching...
+                `);
                 
-                // Get form data
-                const formData = {
-                    court_type: $('#courtType').val(),
-                    case_type: $('#caseType').val().toUpperCase(),
-                    case_number: $('#caseNumber').val(),
-                    case_year: $('#caseYear').val()
-                };
+                // Clear previous results and errors
+                $('#searchResults').empty();
+                $('.error-message').remove();
                 
                 try {
-                    // Make API call to backend
+                    const formData = {
+                        state: $('#state').val(),
+                        case_type: $('#caseType').val(),
+                        case_number: $('#caseNumber').val(),
+                        year: $('#year').val()
+                    };
+                    
+                    // Make API call to our backend
                     const response = await fetch('/api/search', {
                         method: 'POST',
                         headers: {
@@ -113,63 +408,285 @@
                     
                     const data = await response.json();
                     
-                    if (response.ok) {
-                        // Display results
-                        let resultHtml = `
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Case Details</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p><strong>Case Number:</strong> ${data.case_number}/${data.case_year}</p>
-                                            <p><strong>Type:</strong> ${data.case_type}</p>
-                                            <p><strong>Court:</strong> ${data.court_type.replace('_', ' ').toUpperCase()}</p>
-                                            <p><strong>Status:</strong> ${data.case_status}</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>Filing Date:</strong> ${data.filing_date || 'N/A'}</p>
-                                            <p><strong>Next Hearing:</strong> ${data.next_hearing_date || 'Not scheduled'}</p>
-                                            <p><strong>Parties:</strong> ${data.party_names || 'N/A'}</p>
-                                        </div>
-                                    </div>`;
-                        
-                        if (data.is_mock) {
-                            resultHtml += `
-                                <div class="alert alert-warning mt-3">
-                                    <small>This is a demo result. Backend integration will be implemented next.</small>
-                                </div>`;
-                        }
-                        
-                        resultHtml += `</div></div>`;
-                        
-                        $('#searchResults').html(resultHtml);
-                        $('#resultContainer').show();
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to fetch case details');
+                    }
+                    
+                    if (data.results && data.results.length > 0) {
+                        displayResults(data.results);
+                        $('#paginationContainer').removeClass('d-none');
                     } else {
                         $('#searchResults').html(`
-                            <div class="alert alert-danger">
-                                Error: ${data.error || 'Failed to fetch case details'}
-                            </div>
+                            <tr>
+                                <td colspan="7" class="text-center py-4">
+                                    <div class="alert alert-info mb-0">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        No cases found matching your search criteria.
+                                    </div>
+                                </td>
+                            </tr>
                         `);
-                        $('#resultContainer').show();
+                        $('#paginationContainer').addClass('d-none');
                     }
+                    
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error('Search error:', error);
                     $('#searchResults').html(`
-                        <div class="alert alert-danger">
-                            An error occurred while processing your request. Please try again.
-                        </div>
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="alert alert-danger mb-0">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    ${error.message || 'An error occurred while processing your request.'}
+                                </div>
+                            </td>
+                        </tr>
                     `);
-                    $('#resultContainer').show();
+                    $('#paginationContainer').addClass('d-none');
                 } finally {
-                    // Reset button state
-                    button.prop('disabled', false);
-                    spinner.addClass('d-none');
-                    buttonText.text('Search Case');
+                    // Restore button state
+                    searchBtn.prop('disabled', false).html(originalBtnText);
                 }
             });
+            
+            // Handle view details button click
+            $(document).on('click', '.view-details', function() {
+                const caseId = $(this).data('case-id');
+                viewCaseDetails(caseId);
+            });
+            
+            // Handle download PDF button
+            $(document).on('click', '#downloadCasePdf', function() {
+                alert('PDF download functionality will be implemented here.');
+                // In a real app, this would trigger a PDF download
+                // window.location.href = `/api/cases/${currentCaseId}/pdf`;
+            });
+            
+            // Add active class to clicked nav items
+            $('.nav-link').on('click', function() {
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+            });
         });
+        
+        // Function to display search results
+        function displayResults(results) {
+            const resultsContainer = $('#searchResults');
+            resultsContainer.empty();
+            
+            if (results.length === 0) {
+                resultsContainer.html(`
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="alert alert-info mb-0">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                No cases found matching your search criteria.
+                            </div>
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+            
+            // Add each result to the table
+            results.forEach((result) => {
+                const row = `
+                    <tr>
+                        <td>${result.cnr_number || 'N/A'}</td>
+                        <td>${result.filing_number || 'N/A'}</td>
+                        <td>${formatDate(result.filing_date) || 'N/A'}</td>
+                        <td>${result.registration_number || 'N/A'}</td>
+                        <td>${formatDate(result.registration_date) || 'N/A'}</td>
+                        <td>
+                            <span class="badge ${getStatusBadgeClass(result.status)}">
+                                ${result.status || 'N/A'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-details" 
+                                    data-case-id="${result.id || ''}">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                resultsContainer.append(row);
+            });
+        }
+        
+        // Function to view case details
+        function viewCaseDetails(caseId) {
+            const modal = $('#caseDetailsModal');
+            const modalBody = modal.find('.modal-body');
+            
+            // Show loading state
+            modalBody.html(`
+                <div class="text-center my-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading case details...</p>
+                </div>
+            `);
+            
+            // Show the modal
+            const modalInstance = new bootstrap.Modal(modal[0]);
+            modalInstance.show();
+            
+            // Fetch case details
+            fetch(`/api/cases/${caseId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch case details');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    
+                    // Format and display case details
+                    modalBody.html(`
+                        <div class="case-details">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h5>Case Information</h5>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th>CNR Number:</th>
+                                            <td>${data.cnr_number || 'N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Filing Number:</th>
+                                            <td>${data.filing_number || 'N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Registration Number:</th>
+                                            <td>${data.registration_number || 'N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Status:</th>
+                                            <td>
+                                                <span class="badge ${getStatusBadgeClass(data.status)}">
+                                                    ${data.status || 'N/A'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Dates</h5>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th>Filing Date:</th>
+                                            <td>${formatDate(data.filing_date) || 'N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Registration Date:</th>
+                                            <td>${formatDate(data.registration_date) || 'N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Next Hearing:</th>
+                                            <td>${formatDate(data.next_hearing_date) || 'Not scheduled'}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5>Parties</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Party Type</th>
+                                                    <th>Name</th>
+                                                    <th>Advocate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${data.parties && data.parties.length > 0 
+                                                    ? data.parties.map(party => `
+                                                        <tr>
+                                                            <td>${party.type || 'N/A'}</td>
+                                                            <td>${party.name || 'N/A'}</td>
+                                                            <td>${party.advocate || 'N/A'}</td>
+                                                        </tr>
+                                                    `).join('')
+                                                    : '<tr><td colspan="3" class="text-center">No party information available</td></tr>'
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            ${data.judgments && data.judgments.length > 0 ? `
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Judgments</h5>
+                                        <div class="list-group">
+                                            ${data.judgments.map(judgment => `
+                                                <div class="list-group-item">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1">${judgment.title || 'Judgment'}</h6>
+                                                        <small>${formatDate(judgment.date)}</small>
+                                                    </div>
+                                                    <p class="mb-1">${judgment.summary || 'No summary available'}</p>
+                                                    ${judgment.document_url ? `
+                                                        <a href="${judgment.document_url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" 
+                                                           class="btn btn-sm btn-outline-primary mt-2"
+                                                           target="_blank" rel="noopener noreferrer">
+                                                            <i class="bi bi-download"></i> Download
+                                                        </a>
+                                                    ` : ''}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `
+                })
+                .catch(error => {
+                    console.error('Error fetching case details:', error);
+                    modalBody.html(`
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            ${error.message || 'Failed to load case details. Please try again.'}
+                        </div>
+                    `);
+                });
+        }
+        
+        // Helper function to format dates
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'Invalid date';
+            }
+        }
+        
+        // Helper function to get status badge class
+        function getStatusBadgeClass(status) {
+            if (!status) return 'bg-secondary';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('disposed')) return 'bg-danger';
+            if (statusLower.includes('pending')) return 'bg-warning text-dark';
+            if (statusLower.includes('admit') || statusLower.includes('allowed')) return 'bg-success';
+            if (statusLower.includes('dismiss') || statusLower.includes('reject')) return 'bg-dark';
+            return 'bg-info';
+        }
     </script>
 </body>
 </html>
