@@ -372,29 +372,63 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
+        // Helper function to format dates
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'Invalid date';
+            }
+        }
+        
+        // Helper function to get status badge class
+        function getStatusBadgeClass(status) {
+            if (!status) return 'bg-secondary';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('disposed')) return 'bg-danger';
+            if (statusLower.includes('pending')) return 'bg-warning text-dark';
+            if (statusLower.includes('admit') || statusLower.includes('allowed')) return 'bg-success';
+            if (statusLower.includes('dismiss') || statusLower.includes('reject')) return 'bg-dark';
+            return 'bg-info';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchResults = document.getElementById('searchResults');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const errorContainer = document.getElementById('errorContainer');
+
             // Handle form submission
-            $('#searchForm').on('submit', async function(e) {
+            searchForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 // Show loading state
-                const searchBtn = $(this).find('button[type="submit"]');
-                const originalBtnText = searchBtn.html();
-                searchBtn.prop('disabled', true).html(`
+                const originalBtnText = searchBtn.innerHTML;
+                searchBtn.disabled = true;
+                searchBtn.innerHTML = `
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Searching...
-                `);
+                `;
                 
                 // Clear previous results and errors
-                $('#searchResults').empty();
-                $('.error-message').remove();
+                searchResults.innerHTML = '';
+                errorContainer.classList.add('d-none');
                 
                 try {
                     const formData = {
-                        state: $('#state').val(),
-                        case_type: $('#caseType').val(),
-                        case_number: $('#caseNumber').val(),
-                        year: $('#year').val()
+                        state: document.getElementById('state').value,
+                        case_type: document.getElementById('caseType').value,
+                        case_number: document.getElementById('caseNumber').value,
+                        year: document.getElementById('year').value,
+                        court_type: document.getElementById('courtType').value
                     };
                     
                     // Make API call to our backend
@@ -412,90 +446,86 @@
                         throw new Error(data.error || 'Failed to fetch case details');
                     }
                     
-                    if (data.results && data.results.length > 0) {
+                    if (data.case) {
+                        displayCaseDetails(data.case);
+                        paginationContainer.classList.add('d-none');
+                    } else if (data.results && data.results.length > 0) {
                         displayResults(data.results);
-                        $('#paginationContainer').removeClass('d-none');
+                        paginationContainer.classList.remove('d-none');
                     } else {
-                        $('#searchResults').html(`
-                            <tr>
-                                <td colspan="7" class="text-center py-4">
-                                    <div class="alert alert-info mb-0">
-                                        <i class="bi bi-info-circle-fill me-2"></i>
-                                        No cases found matching your search criteria.
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                        $('#paginationContainer').addClass('d-none');
+                        searchResults.innerHTML = `
+                            <div class="col-12">
+                                <div class="alert alert-info mb-0">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    No cases found matching your search criteria.
+                                </div>
+                            </div>
+                        `;
+                        paginationContainer.classList.add('d-none');
                     }
                     
                 } catch (error) {
                     console.error('Search error:', error);
-                    $('#searchResults').html(`
-                        <tr>
-                            <td colspan="7" class="text-center py-4">
-                                <div class="alert alert-danger mb-0">
-                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                    ${error.message || 'An error occurred while processing your request.'}
-                                </div>
-                            </td>
-                        </tr>
-                    `);
-                    $('#paginationContainer').addClass('d-none');
+                    errorContainer.textContent = error.message || 'An error occurred while processing your request.';
+                    errorContainer.classList.remove('d-none');
                 } finally {
                     // Restore button state
-                    searchBtn.prop('disabled', false).html(originalBtnText);
+                    searchBtn.disabled = false;
+                    searchBtn.innerHTML = originalBtnText;
                 }
             });
             
-            // Handle view details button click
-            $(document).on('click', '.view-details', function() {
-                const caseId = $(this).data('case-id');
-                viewCaseDetails(caseId);
-            });
-            
-            // Handle download PDF button
-            $(document).on('click', '#downloadCasePdf', function() {
-                alert('PDF download functionality will be implemented here.');
-                // In a real app, this would trigger a PDF download
-                // window.location.href = `/api/cases/${currentCaseId}/pdf`;
-            });
-            
-            // Add active class to clicked nav items
-            $('.nav-link').on('click', function() {
-                $('.nav-link').removeClass('active');
-                $(this).addClass('active');
+            // Handle tab switching
+            const tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+            tabLinks.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function (e) {
+                    if (e.target.getAttribute('href') === '#causeList') {
+                        fetchCauseList();
+                    }
+                });
             });
         });
         
         // Function to display search results
         function displayResults(results) {
-            const resultsContainer = $('#searchResults');
-            resultsContainer.empty();
+            const resultsContainer = document.getElementById('searchResults');
             
-            if (results.length === 0) {
-                resultsContainer.html(`
-                    <tr>
-                        <td colspan="7" class="text-center py-4">
-                            <div class="alert alert-info mb-0">
-                                <i class="bi bi-info-circle-fill me-2"></i>
-                                No cases found matching your search criteria.
-                            </div>
-                        </td>
-                    </tr>
-                `);
+            if (!results || results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-info mb-0">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            No cases found matching your search criteria.
+                        </div>
+                    </div>
+                `;
                 return;
             }
             
+            // Create table with results
+            let tableHtml = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>CNR Number</th>
+                                <th>Case Number</th>
+                                <th>Filing Date</th>
+                                <th>Status</th>
+                                <th>Next Hearing</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
             // Add each result to the table
             results.forEach((result) => {
-                const row = `
+                tableHtml += `
                     <tr>
                         <td>${result.cnr_number || 'N/A'}</td>
-                        <td>${result.filing_number || 'N/A'}</td>
+                        <td>${result.case_number || 'N/A'}</td>
                         <td>${formatDate(result.filing_date) || 'N/A'}</td>
-                        <td>${result.registration_number || 'N/A'}</td>
-                        <td>${formatDate(result.registration_date) || 'N/A'}</td>
                         <td>
                             <span class="badge ${getStatusBadgeClass(result.status)}">
                                 ${result.status || 'N/A'}
@@ -515,22 +545,21 @@
         
         // Function to view case details
         function viewCaseDetails(caseId) {
-            const modal = $('#caseDetailsModal');
-            const modalBody = modal.find('.modal-body');
+            const modal = new bootstrap.Modal(document.getElementById('caseDetailsModal'));
+            const modalBody = document.querySelector('#caseDetailsModal .modal-body');
             
             // Show loading state
-            modalBody.html(`
+            modalBody.innerHTML = `
                 <div class="text-center my-4">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <p class="mt-2">Loading case details...</p>
                 </div>
-            `);
+            `;
             
             // Show the modal
-            const modalInstance = new bootstrap.Modal(modal[0]);
-            modalInstance.show();
+            modal.show();
             
             // Fetch case details
             fetch(`/api/cases/${caseId}`)
@@ -545,8 +574,60 @@
                         throw new Error(data.error);
                     }
                     
+                    // Format parties
+                    let partiesHtml = '';
+                    if (data.parties && data.parties.length > 0) {
+                        partiesHtml = `
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Party Type</th>
+                                            <th>Name</th>
+                                            <th>Advocate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${data.parties.map(party => `
+                                            <tr>
+                                                <td>${party.type || 'N/A'}</td>
+                                                <td>${party.name || 'N/A'}</td>
+                                                <td>${party.advocate || 'N/A'}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>`;
+                    } else {
+                        partiesHtml = '<p>No party information available</p>';
+                    }
+                    
+                    // Format orders/judgments
+                    let ordersHtml = '';
+                    if (data.orders && data.orders.length > 0) {
+                        ordersHtml = `
+                            <div class="list-group mt-3">
+                                ${data.orders.map(order => `
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">${order.type || 'Order'}</h6>
+                                            <small>${formatDate(order.date) || 'N/A'}</small>
+                                        </div>
+                                        <p class="mb-1">${order.text || 'No details available'}</p>
+                                        ${order.pdf_url ? `
+                                            <a href="${order.pdf_url}" 
+                                               class="btn btn-sm btn-outline-primary mt-2"
+                                               target="_blank" rel="noopener noreferrer">
+                                                <i class="bi bi-download"></i> Download
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>`;
+                    }
+                    
                     // Format and display case details
-                    modalBody.html(`
+                    modalBody.innerHTML = `
                         <div class="case-details">
                             <div class="row mb-4">
                                 <div class="col-md-6">
@@ -593,100 +674,140 @@
                                 </div>
                             </div>
                             
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5>Parties</h5>
-                                    <div class="table-responsive">
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>Party Type</th>
-                                                    <th>Name</th>
-                                                    <th>Advocate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                ${data.parties && data.parties.length > 0 
-                                                    ? data.parties.map(party => `
-                                                        <tr>
-                                                            <td>${party.type || 'N/A'}</td>
-                                                            <td>${party.name || 'N/A'}</td>
-                                                            <td>${party.advocate || 'N/A'}</td>
-                                                        </tr>
-                                                    `).join('')
-                                                    : '<tr><td colspan="3" class="text-center">No party information available</td></tr>'
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                            <div class="mb-4">
+                                <h5>Parties</h5>
+                                ${partiesHtml}
                             </div>
                             
-                            ${data.judgments && data.judgments.length > 0 ? `
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h5>Judgments</h5>
-                                        <div class="list-group">
-                                            ${data.judgments.map(judgment => `
-                                                <div class="list-group-item">
-                                                    <div class="d-flex w-100 justify-content-between">
-                                                        <h6 class="mb-1">${judgment.title || 'Judgment'}</h6>
-                                                        <small>${formatDate(judgment.date)}</small>
-                                                    </div>
-                                                    <p class="mb-1">${judgment.summary || 'No summary available'}</p>
-                                                    ${judgment.document_url ? `
-                                                        <a href="${judgment.document_url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" 
-                                                           class="btn btn-sm btn-outline-primary mt-2"
-                                                           target="_blank" rel="noopener noreferrer">
-                                                            <i class="bi bi-download"></i> Download
-                                                        </a>
-                                                    ` : ''}
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
+                            ${ordersHtml ? `
+                                <div>
+                                    <h5>Orders/Judgments</h5>
+                                    ${ordersHtml}
                                 </div>
                             ` : ''}
                         </div>
-                    `
+                    `;
                 })
                 .catch(error => {
                     console.error('Error fetching case details:', error);
-                    modalBody.html(`
+                    modalBody.innerHTML = `
                         <div class="alert alert-danger">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
                             ${error.message || 'Failed to load case details. Please try again.'}
                         </div>
-                    `);
+                    `;
                 });
         }
+            `;
+        }
         
-        // Helper function to format dates
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
+        // Function to fetch and display cause list
+        async function fetchCauseList() {
+            const date = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD
+            const courtType = document.getElementById('courtType').value;
+            const causeListContainer = document.getElementById('causeListContainer');
+            const errorContainer = document.getElementById('errorContainer');
+            
+            // Show loading state
+            causeListContainer.innerHTML = `
+                <div class="text-center my-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading cause list...</p>
+                </div>
+            `;
+            
             try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                });
-            } catch (e) {
-                return 'Invalid date';
+                const response = await fetch(`/api/causes?date=${date}&court_type=${courtType}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to fetch cause list');
+                }
+                
+                // Display cause list
+                displayCauseList(data.cases || []);
+                
+            } catch (error) {
+                console.error('Error fetching cause list:', error);
+                errorContainer.textContent = error.message || 'Failed to load cause list';
+                errorContainer.classList.remove('d-none');
+                causeListContainer.innerHTML = '';
             }
         }
         
-        // Helper function to get status badge class
-        function getStatusBadgeClass(status) {
-            if (!status) return 'bg-secondary';
+        // Function to display cause list
+        function displayCauseList(cases) {
+            const causeListContainer = document.getElementById('causeListContainer');
             
-            const statusLower = status.toLowerCase();
-            if (statusLower.includes('disposed')) return 'bg-danger';
-            if (statusLower.includes('pending')) return 'bg-warning text-dark';
-            if (statusLower.includes('admit') || statusLower.includes('allowed')) return 'bg-success';
-            if (statusLower.includes('dismiss') || statusLower.includes('reject')) return 'bg-dark';
-            return 'bg-info';
+            if (!cases || cases.length === 0) {
+                causeListContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        No cases listed for today.
+                    </div>
+                `;
+                return;
+            }
+            
+            const tableHtml = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Case Number</th>
+                                <th>Petitioner</th>
+                                <th>Respondent</th>
+                                <th>Purpose</th>
+                                <th>Time</th>
+                                <th>Court Room</th>
+                                <th>Judge</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${cases.map(caseItem => `
+                                <tr>
+                                    <td>${caseItem.case_number || 'N/A'}</td>
+                                    <td>${caseItem.petitioner || 'N/A'}</td>
+                                    <td>${caseItem.respondent || 'N/A'}</td>
+                                    <td>${caseItem.purpose || 'N/A'}</td>
+                                    <td>${caseItem.time || 'N/A'}</td>
+                                    <td>${caseItem.court_room || 'N/A'}</td>
+                                    <td>${caseItem.judge || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            causeListContainer.innerHTML = tableHtml;
         }
-    </script>
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cause list by default
+            fetchCauseList();
+            
+            // Add event listeners for view details buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-details')) {
+                    const caseId = e.target.closest('.view-details').dataset.caseId;
+                    if (caseId) {
+                        viewCaseDetails(caseId);
+                    }
+                }
+            });
+            
+            // Handle tab switching
+            const tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+            tabLinks.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function (e) {
+                    if (e.target.getAttribute('href') === '#causeList') {
+                        fetchCauseList();
+                    }
+                });
+            });
+        });
 </body>
 </html>
