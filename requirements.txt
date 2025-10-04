@@ -8,3 +8,10 @@ webdriver-manager==4.0.1
 pdfkit==1.0.0
 reportlab==4.0.9
 python-dateutil==2.8.2
+pandas==2.0.3
+openpyxl==3.1.2
+Pillow==10.0.0
+lxml==4.9.3
+html5lib==1.1
+pdfplumber==0.10.2
+PyPDF2==3.0.1

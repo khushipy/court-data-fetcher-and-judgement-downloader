@@ -1,128 +1,211 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask import Flask, request, jsonify, render_template, send_from_directory, url_for, flash, redirect
+from models import db, CaseSearch, CaseDetail, Party, CourtOrder
+from config import Config
 import os
-from werkzeug.utils import secure_filename
-import json
+import traceback
+from datetime import datetime
 
+# Initialize Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///court_cases.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-
-# Ensure upload folder exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-db = SQLAlchemy(app)
-
-# Models
-class Case(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    cnr_number = db.Column(db.String(50), unique=True)
-    filing_number = db.Column(db.String(50))
-    filing_date = db.Column(db.DateTime)
-    registration_number = db.Column(db.String(50))
-    registration_date = db.Column(db.DateTime)
-    status = db.Column(db.String(100))
-    court_type = db.Column(db.String(50))
-    state = db.Column(db.String(50))
-    case_type = db.Column(db.String(50))
-    year = db.Column(db.Integer)
-    parties = db.Column(db.Text)  # JSON string of parties
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'cnr_number': self.cnr_number,
-            'filing_number': self.filing_number,
-            'filing_date': self.filing_date.isoformat() if self.filing_date else None,
-            'registration_number': self.registration_number,
-            'registration_date': self.registration_date.isoformat() if self.registration_date else None,
-            'status': self.status,
-            'court_type': self.court_type,
-            'state': self.state,
-            'case_type': self.case_type,
-            'year': self.year,
-            'parties': json.loads(self.parties) if self.parties else [],
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
-        }
-
-# Routes
-@app.route('/api/search', methods=['POST'])
-def search_cases():
-    try:
-        data = request.get_json()
-        
-        # Basic validation
-        required_fields = ['state', 'case_type', 'case_number', 'year']
-        if not all(field in data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
-        
-        # Build query
-        query = Case.query.filter(
-            Case.state == data['state'],
-            Case.case_type == data['case_type'],
-            Case.year == int(data['year'])
-        )
-        
-        # Add case number filter if provided
-        if data.get('case_number'):
-            query = query.filter(Case.filing_number.like(f"%{data['case_number']}%"))
-        
-        # Execute query
-        cases = query.order_by(Case.filing_date.desc()).limit(50).all()
-        
-        # Format results
-        results = [case.to_dict() for case in cases]
-        
-        return jsonify({
-            'success': True,
-            'count': len(results),
-            'results': results
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-@app.route('/api/cases/<int:case_id>', methods=['GET'])
-def get_case_details(case_id):
-    try:
-        case = Case.query.get_or_404(case_id)
-        
-        # In a real app, you might fetch additional details here
-        # For now, we'll just return the basic case info
-        return jsonify({
-            'success': True,
-            **case.to_dict(),
-            # Add mock data for demonstration
-            'next_hearing_date': '2023-12-15',  # Replace with actual field
-            'judgments': [  # Mock judgments
-                {
-                    'id': 1,
-                    'title': 'Final Judgment',
-                    'date': '2023-11-01',
-                    'summary': 'Case disposed with costs.',
-                    'document_url': '/static/sample-judgment.pdf'
-                }
-            ]
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+app.config.from_object(Config)
 
 # Initialize database
-with app.app_context():
-    db.create_all()
+db.init_app(app)
+
+# Ensure static URL is set correctly
+app.static_url_path = '/static'
+
+# Create necessary directories
+os.makedirs(app.config['DOWNLOAD_FOLDER'], exist_ok=True)
+os.makedirs(os.path.join(app.root_path, 'static', 'css'), exist_ok=True)
+os.makedirs(os.path.join(app.root_path, 'static', 'js'), exist_ok=True)
+
+@app.route('/')
+def index():
+    try:
+        with app.app_context():
+            db.create_all()
+        return render_template('index.html')
+    except Exception as e:
+        app.logger.error(f"Error in index route: {str(e)}")
+        app.logger.error(traceback.format_exc())
+        return "An error occurred while loading the page. Please check the logs.", 500
+
+@app.route('/api/search', methods=['POST'])
+def search_case():
+    try:
+        if not request.is_json:
+            return jsonify({
+                'success': False,
+                'error': 'Request must be JSON'
+            }), 400
+            
+        data = request.get_json()
+        case_type = data.get('case_type')
+        case_number = data.get('case_number')
+        year = data.get('year')
+        court_type = data.get('court_type', 'high_court')
+        
+        if not all([case_type, case_number, year]):
+            return jsonify({
+                'success': False,
+                'error': 'Missing required fields (case_type, case_number, year)'
+            }), 400
+    
+        try:
+            # Save search query
+            search = CaseSearch(
+                case_type=case_type,
+                case_number=case_number,
+                year=year,
+                court_type=court_type
+            )
+            db.session.add(search)
+            db.session.commit()
+            
+            # For testing, return mock data
+            mock_case = {
+                'case_number': case_number,
+                'case_type': case_type,
+                'year': year,
+                'status': 'Pending',
+                'next_hearing': '2023-12-01',
+                'parties': [
+                    {
+                        'name': 'John Doe',
+                        'type': 'Petitioner',
+                        'advocate': 'Jane Smith'
+                    },
+                    {
+                        'name': 'State of Example',
+                        'type': 'Respondent',
+                        'advocate': 'Public Prosecutor'
+                    }
+                ]
+            }
+            
+            return jsonify({
+                'success': True,
+                'search_id': search.id,
+                'case': mock_case
+            })
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error in search_case: {str(e)}")
+            app.logger.error(traceback.format_exc())
+            return jsonify({
+                'success': False,
+                'error': 'Failed to process case search. Please try again later.'
+            }), 500
+
+    except Exception as e:
+        app.logger.error(f"Unexpected error in search_case: {str(e)}")
+        app.logger.error(traceback.format_exc())
+        return jsonify({
+            'success': False,
+            'error': 'An unexpected error occurred'
+        }), 500
+
+def save_case_details(search_id, case_data):
+    """
+    Save case details to the database
+    """
+    try:
+        case = CaseDetail(
+            search_id=search_id,
+            cnr_number=case_data.get('cnr_number'),
+            filing_number=case_data.get('filing_number'),
+            registration_number=case_data.get('registration_number'),
+            case_type=case_data.get('case_type'),
+            case_status=case_data.get('status'),
+            court_name=case_data.get('court_name'),
+            judge_name=case_data.get('judge_name'),
+            filing_date=datetime.strptime(case_data['filing_date'], '%Y-%m-%d') if case_data.get('filing_date') else None,
+            registration_date=datetime.strptime(case_data['registration_date'], '%Y-%m-%d') if case_data.get('registration_date') else None,
+            next_hearing_date=datetime.strptime(case_data['next_hearing_date'], '%Y-%m-%d') if case_data.get('next_hearing_date') else None,
+            is_disposed=case_data.get('is_disposed', False)
+        )
+        
+        db.session.add(case)
+        db.session.commit()
+        return case
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Error saving case details: {str(e)}")
+        app.logger.error(traceback.format_exc())
+        raise
+
+@app.route('/api/causes', methods=['GET'])
+def get_cause_list():
+    try:
+        app.logger.info("Received request for cause list")
+        
+        # Get query parameters
+        date = request.args.get('date')
+        court_type = request.args.get('court_type', 'high_court')
+        state_code = request.args.get('state_code', 'dl')  # Default to Delhi
+        district_code = request.args.get('district_code', 'dl')  # Default to Delhi
+        
+        app.logger.info(f"Parameters - date: {date}, court_type: {court_type}, state_code: {state_code}, district_code: {district_code}")
+        
+        # Initialize the scraper
+        from scraper_fixed import CourtScraper
+        app.logger.info("Successfully imported CourtScraper")
+        
+        try:
+            # Initialize the scraper
+            scraper = CourtScraper()
+            app.logger.info("Initialized CourtScraper, fetching cause list...")
+            
+            # Fetch the cause list
+            causes = scraper.fetch_cause_list(
+                date=date,
+                court_type=court_type,
+                state_code=state_code,
+                district_code=district_code
+            )
+            
+            # Close the scraper
+            if hasattr(scraper, 'driver'):
+                scraper.driver.quit()
+                
+            app.logger.info(f"Successfully fetched {len(causes) if causes else 0} cases")
+            
+            return jsonify({
+                'success': True,
+                'date': date,
+                'court_type': court_type,
+                'cases': causes if causes else []
+            })
+            
+        except Exception as e:
+            # Ensure driver is closed even if there's an error
+            if 'scraper' in locals() and hasattr(scraper, 'driver'):
+                try:
+                    scraper.driver.quit()
+                except:
+                    pass
+            raise  # Re-raise the exception to be caught by the outer try-except
+            
+    except ImportError as ie:
+        app.logger.error(f"Import error: {str(ie)}")
+        app.logger.error(traceback.format_exc())
+        return jsonify({
+            'success': False,
+            'error': f'Error importing required modules: {str(ie)}',
+            'details': 'Make sure all dependencies are installed.'
+        }), 500
+    except Exception as e:
+        app.logger.error(f"Unexpected error in get_cause_list: {str(e)}")
+        app.logger.error(traceback.format_exc())
+        return jsonify({
+            'success': False,
+            'error': 'Failed to fetch cause list. Please try again later.',
+            'details': str(e)
+        }), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True, port=5000)
