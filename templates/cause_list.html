@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Cause List - Court Case Fetcher{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Cause List</h2>
+    
+    <!-- Search Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Search Cause List</h5>
+            <form id="causeListForm" class="row g-3">
+                <div class="col-md-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="courtType" class="form-label">Court Type</label>
+                    <select class="form-select" id="courtType" name="court_type">
+                        <option value="high_court">High Court</option>
+                        <option value="district_court">District Court</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="stateCode" class="form-label">State Code</label>
+                    <input type="text" class="form-control" id="stateCode" name="state_code" value="dl" placeholder="e.g., dl">
+                </div>
+                <div class="col-md-2">
+                    <label for="districtCode" class="form-label">District Code</label>
+                    <input type="text" class="form-control" id="districtCode" name="district_code" value="dl" placeholder="e.g., dl">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Results</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="causeListTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Case Number</th>
+                            <th>Parties</th>
+                            <th>Court</th>
+                            <th>Judge</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="causeListBody">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="loadingSpinner" class="text-center my-4 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Fetching cause list, please wait...</p>
+            </div>
+            <div id="noResults" class="text-center my-4 d-none">
+                <p>No cases found for the selected criteria.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
+
+    // Form submission
+    document.getElementById('causeListForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        fetchCauseList();
+    });
+
+    // Fetch cause list function
+    function fetchCauseList() {
+        const form = document.getElementById('causeListForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData).toString();
+        
+        // Show loading spinner
+        document.getElementById('loadingSpinner').classList.remove('d-none');
+        document.getElementById('noResults').classList.add('d-none');
+        
+        // Clear previous results
+        document.getElementById('causeListBody').innerHTML = '';
+
+        // Make API request
+        fetch(`/api/causes?${params}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').classList.add('d-none');
+                
+                if (data.success && data.cases && data.cases.length > 0) {
+                    // Populate table
+                    const tbody = document.getElementById('causeListBody');
+                    data.cases.forEach((caseItem, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${caseItem.case_number || 'N/A'}</td>
+                            <td>${caseItem.parties || 'N/A'}</td>
+                            <td>${caseItem.court_name || 'N/A'}</td>
+                            <td>${caseItem.judge_name || 'N/A'}</td>
+                            <td>${caseItem.hearing_time || 'N/A'}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Show no results message
+                    document.getElementById('noResults').classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching cause list:', error);
+                document.getElementById('loadingSpinner').classList.add('d-none');
+                document.getElementById('noResults').classList.remove('d-none');
+                document.getElementById('noResults').innerHTML = 
+                    '<div class="alert alert-danger">Error fetching cause list. Please try again later.</div>';
+            });
+    }
+
+    // Load initial data
+    fetchCauseList();
+});
+</script>
+{% endblock %}

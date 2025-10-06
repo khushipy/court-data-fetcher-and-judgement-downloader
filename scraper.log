@@ -1,0 +1,444 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:47:26] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:47:26] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:47:26] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:47:26] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:47:26] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-11-15, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:There is no [win64] chromedriver "140.0.7339.207" for browser google-chrome "140.0.7339" in cache
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:WebDriver version 140.0.7339.207 selected
+INFO:WDM:Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/140.0.7339.207/win32/chromedriver-win32.zip
+INFO:WDM:About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/140.0.7339.207/win32/chromedriver-win32.zip
+INFO:WDM:Driver downloading response is 200
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver has been saved in cache [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207]
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:48:53] "[35m[1mGET /api/causes?date=2023-11-15 HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:27] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:27] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:27] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:27] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:27] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:30] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:33] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:33] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:33] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:33] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:52] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:52] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:52] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:49:52] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=tyDpI90FGRRnfmbbFfik HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+WARNING:werkzeug: * Debugger is active!
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:26] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:26] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:26] "GET /static/css/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:43] "GET /?state=dl&court_type=district_court&case_type=CIVIL&case_number=1&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:43] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:50:43] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:51:05] "GET /?state=ka&court_type=district_court&case_type=CIVIL&case_number=1&year=2019 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:51:05] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:51:05] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 53, in search_case
+    scraper = CourtScraper(headless=True, download_dir=app.config['DOWNLOAD_FOLDER'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:53:13] "[35m[1mPOST /api/search HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:53:24] "GET /api/search/1 HTTP/1.1" 200 -
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 53, in search_case
+    scraper = CourtScraper(headless=True, download_dir=app.config['DOWNLOAD_FOLDER'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:53:57] "[35m[1mPOST /api/search HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:36] "GET /?state=dl&court_type=high_court&case_type=CRIM&case_number=1234&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:36] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:36] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:49] "GET /?state=dl&court_type=district_court&case_type=CRIM&case_number=1234&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:54:49] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:55:55] "[35m[1mGET /cause-list HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:55:55] "GET /cause-list?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:55:55] "GET /cause-list?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:55:55] "GET /cause-list?__debugger__=yes&cmd=resource&f=console.png&s=xaVJfdvvpLCmhfvZLojR HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:55:56] "GET /cause-list?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:56:27] "[35m[1mGET /cause-list HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:58:54] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:10] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:11] "GET /static/css/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:11] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:18] "[35m[1mGET /api/causes?date=2025-10-06&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1[0m" 500 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-06-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 00:59:54] "[35m[1mGET /api/causes?date=2023-06-06&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1[0m" 500 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-01-24, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:00:13] "[35m[1mGET /api/causes?date=2023-01-24&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:00:56] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:00:56] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:00:56] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:20] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:21] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:21] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:23] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:23] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:23] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:30] "[35m[1mGET /api/causes?date=2025-10-06&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1[0m" 500 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-06-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+ERROR:app:Error in get_cause_list: [WinError 193] %1 is not a valid Win32 application
+ERROR:app:Traceback (most recent call last):
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\app.py", line 160, in get_cause_list
+    with CourtScraper() as scraper:
+         ^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 22, in __init__
+    self._init_driver()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\scraper_fixed.py", line 32, in _init_driver
+    self.driver = webdriver.Chrome(service=service, options=opts)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 53, in __init__
+    self.service.start()
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self._start_process(self._path)
+  File "C:\Users\Khushi Pal\court-data-fetcher-and-judgement-downloader\venv\Lib\site-packages\selenium\webdriver\common\service.py", line 204, in _start_process
+    self.process = subprocess.Popen(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Khushi Pal\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application
+
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:03:51] "[35m[1mGET /api/causes?date=2023-06-06&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-11-15, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2023-11-15 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-06-15, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:06:17] "GET /api/causes?date=2023-11-15&court_type=high_court HTTP/1.1" 200 -
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2023-06-15 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:06:52] "GET /api/causes?date=2023-06-15&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:07:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:07:57] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:07:58] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "GET /?state=ka&court_type=district_court&case_type=CIVIL&case_number=1234&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
