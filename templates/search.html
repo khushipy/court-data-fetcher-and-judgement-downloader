@@ -1,0 +1,731 @@
+<!-- templates/search.html -->
+{% extends "base.html" %}
+
+{% block title %}Advanced Case Search - Court Case Fetcher{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+    /* Progress Steps */
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        counter-reset: step;
+    }
+    
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+    
+    .step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 60%;
+        right: -40%;
+        height: 2px;
+        background-color: #dee2e6;
+        z-index: 1;
+    }
+    
+    .step.active:not(:last-child)::after {
+        background-color: #0d6efd;
+    }
+    
+    .step.completed:not(:last-child)::after {
+        background-color: #198754;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        line-height: 38px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #6c757d;
+        font-weight: 600;
+        margin: 0 auto 8px;
+        position: relative;
+        z-index: 2;
+        border: 2px solid #dee2e6;
+    }
+    
+    .step.active .step-number {
+        background-color: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    
+    .step.completed .step-number {
+        background-color: #198754;
+        color: white;
+        border-color: #198754;
+    }
+    
+    .step-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .step.active .step-label,
+    .step.completed .step-label {
+        color: #212529;
+        font-weight: 600;
+    }
+    
+    /* Form Styles */
+    .form-step {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    .form-step.active {
+        display: block;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Card Styles */
+    .case-card {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+        border: none;
+    }
+    
+    .case-card .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: 600;
+    }
+    
+    .case-detail {
+        margin-bottom: 0.5rem;
+    }
+    
+    .case-detail-label {
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .step:not(:last-child)::after {
+            left: 70%;
+            right: -30%;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            line-height: 26px;
+            font-size: 0.875rem;
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom-0">
+                    <h2 class="h4 mb-0">eCourts Case Search</h2>
+                    <p class="text-muted mb-0">Search for case details in Indian courts</p>
+                </div>
+                <div class="card-body">
+                    <!-- Progress Steps -->
+                    <div class="progress-steps">
+                        <div class="step active" id="step1-indicator">
+                            <div class="step-number">1</div>
+                            <div class="step-label">State & Court</div>
+                        </div>
+                        <div class="step" id="step2-indicator">
+                            <div class="step-number">2</div>
+                            <div class="step-label">District</div>
+                        </div>
+                        <div class="step" id="step3-indicator">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Case Type</div>
+                        </div>
+                        <div class="step" id="step4-indicator">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Case Details</div>
+                        </div>
+                        <div class="step" id="step5-indicator">
+                            <div class="step-number">5</div>
+                            <div class="step-label">Verification</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Form -->
+                    <form id="caseSearchForm" novalidate>
+                        <!-- Step 1: State & Court Type -->
+                        <div class="form-step active" id="step1">
+                            <div class="mb-4">
+                                <h5 class="mb-3">Select State and Court Type</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="state" class="form-label">State <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="state" required>
+                                            <option value="" selected disabled>Select State</option>
+                                            <option value="delhi">Delhi</option>
+                                            <option value="maharashtra">Maharashtra</option>
+                                            <option value="karnataka">Karnataka</option>
+                                            <!-- Add more states as needed -->
+                                        </select>
+                                        <div class="invalid-feedback">Please select a state</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="courtType" class="form-label">Court Type <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="courtType" required>
+                                            <option value="high_court">High Court</option>
+                                            <option value="district_court">District Court</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: District -->
+                        <div class="form-step" id="step2">
+                            <div class="mb-4">
+                                <h5 class="mb-3">Select District</h5>
+                                <div class="mb-3">
+                                    <label for="district" class="form-label">District <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="district" required disabled>
+                                        <option value="" selected disabled>Loading districts...</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a district</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Case Type -->
+                        <div class="form-step" id="step3">
+                            <div class="mb-4">
+                                <h5 class="mb-3">Select Case Type</h5>
+                                <div class="mb-3">
+                                    <label for="caseType" class="form-label">Case Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="caseType" required disabled>
+                                        <option value="" selected disabled>Loading case types...</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a case type</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Case Details -->
+                        <div class="form-step" id="step4">
+                            <div class="mb-4">
+                                <h5 class="mb-3">Enter Case Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="caseNumber" class="form-label">Case Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="caseNumber" required>
+                                        <div class="invalid-feedback">Please enter case number</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="year" class="form-label">Year <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="year" min="1900" max="2099" required>
+                                        <div class="invalid-feedback">Please enter a valid year</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5: CAPTCHA Verification -->
+                        <div class="form-step" id="step5">
+                            <div class="mb-4">
+                                <h5 class="mb-3">Verification</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <img id="captchaImage" src="" alt="CAPTCHA" class="img-fluid mb-2" style="border: 1px solid #ddd;">
+                                                <button type="button" id="refreshCaptcha" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="captcha" class="form-label">Enter the text shown above <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="captcha" required>
+                                        <div class="invalid-feedback">Please enter the CAPTCHA text</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" id="prevBtn" style="display: none;">
+                                <i class="bi bi-arrow-left me-1"></i> Previous
+                            </button>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-primary" id="nextBtn">
+                                    Next <i class="bi bi-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn btn-success d-none" id="submitBtn">
+                                    <span id="submitBtnText">Search</span>
+                                    <span id="submitBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="searchResults" class="d-none">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h3 class="h5 mb-0">Search Results</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="caseDetails"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form elements
+    const form = document.getElementById('caseSearchForm');
+    const steps = document.querySelectorAll('.form-step');
+    const stepIndicators = document.querySelectorAll('.step');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const submitBtnSpinner = document.getElementById('submitBtnSpinner');
+    const searchResults = document.getElementById('searchResults');
+    const caseDetails = document.getElementById('caseDetails');
+    
+    // Form fields
+    const stateSelect = document.getElementById('state');
+    const courtTypeSelect = document.getElementById('courtType');
+    const districtSelect = document.getElementById('district');
+    const caseTypeSelect = document.getElementById('caseType');
+    const caseNumberInput = document.getElementById('caseNumber');
+    const yearInput = document.getElementById('year');
+    const captchaInput = document.getElementById('captcha');
+    const captchaImage = document.getElementById('captchaImage');
+    const refreshCaptchaBtn = document.getElementById('refreshCaptcha');
+    
+    let currentStep = 1;
+    let captchaText = '';
+    
+    // Initialize the form
+    function initForm() {
+        updateStepIndicators();
+        updateButtons();
+        loadCaseTypes();
+        initCaptcha();
+        
+        // Event listeners
+        prevBtn.addEventListener('click', prevStep);
+        nextBtn.addEventListener('click', nextStep);
+        form.addEventListener('submit', handleSubmit);
+        stateSelect.addEventListener('change', loadDistricts);
+        refreshCaptchaBtn.addEventListener('click', initCaptcha);
+    }
+    
+    // Update step indicators
+    function updateStepIndicators() {
+        stepIndicators.forEach((indicator, index) => {
+            if (index + 1 < currentStep) {
+                indicator.classList.add('completed');
+                indicator.classList.remove('active');
+            } else if (index + 1 === currentStep) {
+                indicator.classList.add('active');
+                indicator.classList.remove('completed');
+            } else {
+                indicator.classList.remove('active', 'completed');
+            }
+        });
+    }
+    
+    // Update navigation buttons
+    function updateButtons() {
+        // Show/hide previous button
+        if (currentStep === 1) {
+            prevBtn.style.display = 'none';
+        } else {
+            prevBtn.style.display = 'block';
+        }
+        
+        // Update next/submit button
+        if (currentStep === steps.length) {
+            nextBtn.classList.add('d-none');
+            submitBtn.classList.remove('d-none');
+        } else {
+            nextBtn.classList.remove('d-none');
+            submitBtn.classList.add('d-none');
+        }
+    }
+    
+    // Go to next step
+    function nextStep() {
+        if (validateStep(currentStep)) {
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show next step
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Update UI
+            updateStepIndicators();
+            updateButtons();
+            
+            // Load data for next step if needed
+            if (currentStep === 5) {
+                initCaptcha();
+            }
+        }
+    }
+    
+    // Go to previous step
+    function prevStep() {
+        // Hide current step
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        
+        // Show previous step
+        currentStep--;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        
+        // Update UI
+        updateStepIndicators();
+        updateButtons();
+    }
+    
+    // Validate current step
+    function validateStep(step) {
+        let isValid = true;
+        const currentStepElement = document.getElementById(`step${step}`);
+        
+        // Get all required fields in current step
+        const requiredFields = currentStepElement.querySelectorAll('[required]');
+        
+        // Check each required field
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+                
+                // Additional validation for specific fields
+                if (field.id === 'year') {
+                    const year = parseInt(field.value);
+                    if (year < 1900 || year > new Date().getFullYear() + 1) {
+                        field.classList.add('is-invalid');
+                        field.nextElementSibling.textContent = 'Please enter a valid year';
+                        isValid = false;
+                    }
+                }
+            }
+        });
+        
+        return isValid;
+    }
+    
+    // Load districts based on selected state
+    async function loadDistricts() {
+        const state = stateSelect.value;
+        if (!state) return;
+        
+        districtSelect.disabled = true;
+        districtSelect.innerHTML = '<option value="" selected disabled>Loading districts...</option>';
+        
+        try {
+            const response = await fetch(`/api/districts/${state}`);
+            const data = await response.json();
+            
+            if (data.success && data.districts.length > 0) {
+                districtSelect.innerHTML = '<option value="" selected disabled>Select District</option>';
+                data.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.toLowerCase().replace(/\s+/g, '_');
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+                districtSelect.disabled = false;
+            } else {
+                districtSelect.innerHTML = '<option value="" selected disabled>No districts found</option>';
+            }
+        } catch (error) {
+            console.error('Error loading districts:', error);
+            showError('Failed to load districts. Please try again.');
+            districtSelect.innerHTML = '<option value="" selected disabled>Error loading districts</option>';
+        }
+    }
+    
+    // Load case types
+    async function loadCaseTypes() {
+        caseTypeSelect.disabled = true;
+        caseTypeSelect.innerHTML = '<option value="" selected disabled>Loading case types...</option>';
+        
+        try {
+            const response = await fetch('/api/case-types');
+            const data = await response.json();
+            
+            if (data.success && data.case_types.length > 0) {
+                caseTypeSelect.innerHTML = '<option value="" selected disabled>Select Case Type</option>';
+                data.case_types.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.toLowerCase().replace(/\s+/g, '_');
+                    option.textContent = type;
+                    caseTypeSelect.appendChild(option);
+                });
+                caseTypeSelect.disabled = false;
+            } else {
+                caseTypeSelect.innerHTML = '<option value="" selected disabled>No case types found</option>';
+            }
+        } catch (error) {
+            console.error('Error loading case types:', error);
+            showError('Failed to load case types. Please try again.');
+            caseTypeSelect.innerHTML = '<option value="" selected disabled>Error loading case types</option>';
+        }
+    }
+    
+    // Initialize CAPTCHA
+    async function initCaptcha() {
+        try {
+            const response = await fetch('/api/init');
+            const data = await response.json();
+            
+            if (data.success) {
+                captchaImage.src = data.captcha_url;
+                captchaText = data.captcha_text;
+            } else {
+                showError('Failed to load CAPTCHA. Please refresh the page.');
+            }
+        } catch (error) {
+            console.error('Error initializing CAPTCHA:', error);
+            showError('Failed to load CAPTCHA. Please try again.');
+        }
+    }
+    
+    // Handle form submission
+    async function handleSubmit(e) {
+        e.preventDefault();
+        
+        // Validate CAPTCHA
+        const captchaInput = document.getElementById('captcha');
+        if (captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
+            captchaInput.classList.add('is-invalid');
+            captchaInput.nextElementSibling.textContent = 'Invalid CAPTCHA. Please try again.';
+            initCaptcha(); // Refresh CAPTCHA
+            return;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtnText.textContent = 'Searching...';
+        submitBtnSpinner.classList.remove('d-none');
+        
+        try {
+            // Prepare search data
+            const searchData = {
+                state: stateSelect.value,
+                court_type: courtTypeSelect.value,
+                district: districtSelect.value,
+                case_type: caseTypeSelect.value,
+                case_number: caseNumberInput.value,
+                year: yearInput.value,
+                captcha: captchaInput.value
+            };
+            
+            // Send search request
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(searchData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Display search results
+                displaySearchResults(data);
+                searchResults.classList.remove('d-none');
+                
+                // Scroll to results
+                searchResults.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showError(data.error || 'Failed to perform search. Please try again.');
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            showError('An error occurred while processing your request. Please try again.');
+        } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitBtnText.textContent = 'Search';
+            submitBtnSpinner.classList.add('d-none');
+        }
+    }
+    
+    // Display search results
+    function displaySearchResults(data) {
+        const { case: caseData, parties = [], orders = [], pdf_url } = data;
+        
+        // Format the case details
+        let html = `
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card case-card mb-4">
+                        <div class="card-header">
+                            <h4 class="h6 mb-0">Case Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="case-detail">
+                                <span class="case-detail-label">CNR Number:</span>
+                                <span>${caseData.cnr_number || 'N/A'}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Filing Number:</span>
+                                <span>${caseData.filing_number || 'N/A'}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Registration Number:</span>
+                                <span>${caseData.registration_number || 'N/A'}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Filing Date:</span>
+                                <span>${formatDate(caseData.filing_date)}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Registration Date:</span>
+                                <span>${formatDate(caseData.registration_date)}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Next Hearing:</span>
+                                <span>${formatDate(caseData.next_hearing_date) || 'Not Available'}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Status:</span>
+                                <span class="badge bg-${caseData.is_disposed ? 'danger' : 'success'}">
+                                    ${caseData.case_status || (caseData.is_disposed ? 'Disposed' : 'Pending')}
+                                </span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Judge:</span>
+                                <span>${caseData.judge_name || 'N/A'}</span>
+                            </div>
+                            <div class="case-detail">
+                                <span class="case-detail-label">Court:</span>
+                                <span>${caseData.court_name || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card case-card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="h6 mb-0">Parties</h4>
+                        </div>
+                        <div class="card-body">
+                            ${parties.length > 0 ? 
+                                parties.map(party => `
+                                    <div class="mb-3">
+                                        <h6 class="h6">${party.party_type || 'Party'}</h6>
+                                        <p class="mb-1">${party.name || 'N/A'}</p>
+                                        ${party.advocate ? `
+                                            <small class="text-muted">Advocate: ${party.advocate}</small>
+                                        ` : ''}
+                                    </div>
+                                `).join('') : 
+                                '<p class="text-muted mb-0">No party information available.</p>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="card case-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="h6 mb-0">Orders & Judgments</h4>
+                            ${pdf_url ? `
+                                <a href="${pdf_url}" class="btn btn-sm btn-primary" download>
+                                    <i class="bi bi-download me-1"></i> Download PDF
+                                </a>
+                            ` : ''}
+                        </div>
+                        <div class="card-body">
+                            ${orders.length > 0 ? 
+                                orders.map(order => `
+                                    <div class="mb-3 pb-2 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="h6 mb-0">${order.order_type || 'Order'}</h6>
+                                            <small class="text-muted">${formatDate(order.order_date)}</small>
+                                        </div>
+                                        <p class="mb-1">${order.description || 'No description available.'}</p>
+                                    </div>
+                                `).join('') : 
+                                '<p class="text-muted mb-0">No orders or judgments available.</p>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        caseDetails.innerHTML = html;
+    }
+    
+    // Helper function to format dates
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        } catch (e) {
+            return dateString;
+        }
+    }
+    
+    // Show error message
+    function showError(message) {
+        // You can implement a toast or alert here
+        alert(message);
+    }
+    
+    // Initialize the form
+    initForm();
+});
+</script>
+{% endblock %}

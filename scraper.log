@@ -442,3 +442,236 @@ INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:07:58] "[36mGET /static/css/styles.
 INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "GET /?state=ka&court_type=district_court&case_type=CIVIL&case_number=1234&year=2023 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
 INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:08:13] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:03] "GET /?state=ka&court_type=district_court&case_type=CIVIL&case_number=1234&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:03] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:04] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:04] "GET /?state=ka&court_type=district_court&case_type=CIVIL&case_number=1234&year=2023 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:04] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:04] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:28] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:28] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2025-10-06 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2023-07-24, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:30:50] "GET /api/causes?date=2025-10-06&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1" 200 -
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2023-07-24 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:31:07] "GET /api/causes?date=2023-07-24&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:31:35] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:31:35] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 01:31:35] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-06, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2025-10-06 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+WARNING:urllib3.connectionpool:Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /session/6d9049ecd5e109018963ba1e92ae1b72
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:34:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:34:59] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:34:59] "GET /static/css/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:34:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:05] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:05] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:05] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:06] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:06] "[33mGET /static/js/main.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:06] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:app:Received request for cause list
+INFO:app:Parameters - date: 2025-10-07, court_type: high_court, state_code: dl, district_code: dl
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Get LATEST chromedriver version for google-chrome
+INFO:WDM:Driver [C:\Users\Khushi Pal\.wdm\drivers\chromedriver\win64\140.0.7339.207\chromedriver-win32/THIRD_PARTY_NOTICES.chromedriver] found in cache
+WARNING:scraper_fixed:Failed to use ChromeDriverManager: [WinError 193] %1 is not a valid Win32 application
+INFO:scraper_fixed:Selenium driver started
+INFO:app:Initialized CourtScraper, fetching cause list...
+INFO:scraper_fixed:Fetching cause list for 2025-10-07 from high_court
+INFO:scraper_fixed:Opened https://hcservices.ecourts.gov.in/hcservices/main.php
+INFO:scraper_fixed:Successfully fetched 2 sample cases
+INFO:app:Successfully fetched 2 cases
+INFO:werkzeug:127.0.0.1 - - [07/Oct/2025 23:35:59] "GET /api/causes?date=2025-10-07&court_type=high_court&state_code=dl&district_code=dl HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\models.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\models.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "[33mGET /static/js/script.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "GET /static/css/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "GET /static/css/search.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "GET /static/js/search.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:38] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:49] "GET /cause-list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:49] "[33mGET /static/js/script.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:49] "[36mGET /static/css/search.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 00:32:49] "[36mGET /static/js/search.js HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\scraper_fixed.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\models.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\captcha.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\__init__.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\Image.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageDraw.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageFont.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\_typing.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\_version.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ExifTags.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageMode.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\TiffTags.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\_binary.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\_deprecate.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\_util.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageFile.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageFilter.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImagePalette.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageQt.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\TiffImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\BmpImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\GifImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\JpegImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\PpmImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\PngImagePlugin.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageCms.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageColor.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageShow.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\ImageDraw2.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\PIL\\features.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\packaging\\version.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\blueprints.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\signals.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\markupsafe\\__init__.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\click\\__init__.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\exceptions.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\routing\\__init__.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\serving.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\cli.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\json\\provider.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\logging.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\testing.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\flask\\debughelpers.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\local.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\formparser.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\wsgi.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\test.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\http.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\user_agent.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\sansio\\http.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\sansio\\utils.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\urls.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\werkzeug\\datastructures\\cache_control.py', reloading
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\venv\\Lib\\site-packages\\jinja2\\bccache.py', reloading
+INFO:werkzeug: * Restarting with watchdog (windowsapi)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 100-291-235
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 18:45:41] "[35m[1mGET / HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 18:45:41] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 18:45:41] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 18:45:41] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=qpED1wiOCbrsWTjcyXW8 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 18:45:42] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\Khushi Pal\\court-data-fetcher-and-judgement-downloader\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 260-415-444
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:27] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:28] "[33mGET /static/js/script.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:28] "[36mGET /static/css/search.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:28] "[36mGET /static/js/search.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:28] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "GET /search HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "[33mGET /static/js/script.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "[36mGET /static/css/search.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "[36mGET /static/js/search.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "GET /api/case-types HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "GET /api/init HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:33] "GET /static/captcha/captcha_4ab5b0c5-8a49-4c03-8e6c-6b0033031fd5.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:07:39] "GET /api/districts/delhi HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:00] "GET /api/init HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:00] "GET /static/captcha/captcha_16cb2d60-1a57-48cf-aa6c-c917601e1c83.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:24] "[33mGET /static/js/script.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:24] "[36mGET /static/css/search.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2025 20:08:24] "[36mGET /static/js/search.js HTTP/1.1[0m" 304 -

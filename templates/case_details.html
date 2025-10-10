@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}Case Details - {{ case_details.cnr_number or 'N/A' }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Case Status Banner -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="d-flex align-items-center p-3" style="background-color: #f8f9fa; border-radius: 0.5rem 0.5rem 0 0;">
+                <div class="d-flex align-items-center me-4">
+                    <span class="badge bg-danger text-white me-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                        {{ 'Disposed' if case_details.is_disposed else 'Pending' }}
+                    </span>
+                    <span class="text-muted">Next Hearing: <strong id="nextHearingDate" class="text-dark">
+                        {{ case_details.next_hearing_date.strftime('%d-%b-%Y') if case_details.next_hearing_date else 'N/A' }}
+                    </strong></span>
+                </div>
+                <div class="ms-auto">
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="window.print()">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/api/case/{{ search_id }}/download'">
+                        <i class="bi bi-download"></i> Download
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress rounded-0" style="height: 4px;">
+                <div class="progress-bar bg-{{ 'success' if case_details.is_disposed else 'warning' }}" 
+                     style="width: {{ '100' if case_details.is_disposed else '50' }}%">
+                </div>
+            </div>
+            
+            <!-- Case Numbers -->
+            <div class="p-4">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted">CNR Number</small>
+                            <span class="fw-bold">{{ case_details.cnr_number or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted">Filing Number</small>
+                            <span class="fw-bold">{{ case_details.filing_number or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted">Registration Number</small>
+                            <span class="fw-bold">{{ case_details.registration_number or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted">Filing Date</small>
+                            <span class="fw-bold">{{ case_details.filing_date.strftime('%d-%b-%Y') if case_details.filing_date else 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column">
+                            <small class="text-muted">Registration Date</small>
+                            <span class="fw-bold">{{ case_details.registration_date.strftime('%d-%b-%Y') if case_details.registration_date else 'N/A' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Details Tabs -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-0">
+            <ul class="nav nav-tabs" id="caseTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Case Details</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="parties-tab" data-bs-toggle="tab" data-bs-target="#parties" type="button" role="tab">Parties</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab">Documents</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content p-4" id="caseTabsContent">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-3">Case Information</h6>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Case Type</small>
+                                        <span class="fw-bold">{{ case_details.case_type or 'N/A' }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Case Status</small>
+                                        <span class="fw-bold">{{ case_details.case_status or 'N/A' }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Category</small>
+                                        <span class="fw-bold">{{ case_details.category or 'N/A' }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Act</small>
+                                        <span class="fw-bold">{{ case_details.act or 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-3">Court Information</h6>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <small class="text-muted d-block">Court</small>
+                                        <span class="fw-bold">{{ case_details.court_name or 'N/A' }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Judge</small>
+                                        <span class="fw-bold">{{ case_details.judge_name or 'N/A' }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Bench</small>
+                                        <span class="fw-bold">{{ case_details.bench or 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100" style="background-color: #f8f9fa; border: 1px dashed #dee2e6;">
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                    <i class="bi bi-file-earmark-text" style="font-size: 2rem; color: #6c757d; margin-bottom: 1rem;"></i>
+                                    <h5 class="mb-3">Case Summary</h5>
+                                    <p class="text-muted text-center">
+                                        {{ case_details.summary or 'No summary available for this case.' }}
+                                    </p>
+                                    <button class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#fullTextModal">
+                                        <i class="bi bi-eye me-2"></i>View Full Text
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Parties Tab -->
+                <div class="tab-pane fade" id="parties" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Advocate</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for party in parties %}
+                                <tr>
+                                    <td>{{ party.party_type or 'N/A' }}</td>
+                                    <td>{{ party.name or 'N/A' }}</td>
+                                    <td>{{ party.advocate_name or 'N/A' }}</td>
+                                    <td>{{ party.address or 'N/A' }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No party information available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Documents Tab -->
+                <div class="tab-pane fade" id="documents" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.order_type or 'N/A' }}</td>
+                                    <td>{{ order.order_date.strftime('%d-%b-%Y') if order.order_date else 'N/A' }}</td>
+                                    <td>{{ order.description or 'N/A' }}</td>
+                                    <td>
+                                        {% if order.pdf_url or order.local_pdf_path %}
+                                        <a href="{{ order.pdf_url or url_for('static', filename=order.local_pdf_path) }}" 
+                                           class="btn btn-sm btn-outline-primary" 
+                                           target="_blank">
+                                            <i class="bi bi-download"></i> Download
+                                        </a>
+                                        {% else %}
+                                        <span class="text-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No documents available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Text Modal -->
+<div class="modal fade" id="fullTextModal" tabindex="-1" aria-labelledby="fullTextModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullTextModalLabel">Full Case Text</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 bg-light rounded">
+            {{ case_details.full_text or 'No full text available for this case.' }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-2"></i>Print
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .nav-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .nav-tabs .nav-link.active {
+        color: #0d6efd;
+        background: none;
+        border: none;
+        border-bottom: 3px solid #0d6efd;
+    }
+    
+    .nav-tabs .nav-link:hover {
+        border-color: transparent;
+        color: #0d6efd;
+    }
+    
+    .card {
+        border-radius: 0.75rem;
+        overflow: hidden;
+    }
+    
+    .progress {
+        border-radius: 0;
+    }
+    
+    .text-muted {
+        font-size: 0.85rem;
+    }
+    
+    .fw-bold {
+        font-weight: 600 !important;
+    }
+    
+    .badge {
+        padding: 0.5em 0.8em;
+        font-weight: 500;
+    }
+    
+    /* Print specific styles */
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #dee2e6 !important;
+        }
+        
+        .tab-pane {
+            display: block !important;
+            opacity: 1 !important;
+        }
+    }
+</style>
+{% endblock %}

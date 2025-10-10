@@ -161,3 +161,116 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 }
+/* Case Details Page Styles */
+.case-header {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.case-status-badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.case-progress {
+    height: 8px;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.case-info-card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.case-info-card .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+}
+
+.case-info-card .card-body {
+    padding: 1.5rem;
+}
+
+.case-meta {
+    margin-bottom: 1.5rem;
+}
+
+.case-meta .label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.case-meta .value {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd;
+    background: none;
+    border: none;
+    border-bottom: 3px solid #0d6efd;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #0d6efd;
+}
+
+/* Tables */
+.case-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.case-table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.case-table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-tabs .nav-link {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .case-info-card .card-body {
+        padding: 1rem;
+    }
+}
